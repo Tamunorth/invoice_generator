@@ -9,7 +9,7 @@ import 'package:store_invoice_generator/model/invoice.dart';
 import 'package:store_invoice_generator/model/supplier.dart';
 import 'package:store_invoice_generator/utils.dart';
 
-const String naira = '#';
+const String naira = 'NGN';
 
 class PdfInvoiceApi {
   static Future<File> generate(Invoice invoice) async {
@@ -27,7 +27,7 @@ class PdfInvoiceApi {
       footer: (context) => buildFooter(invoice),
     ));
 
-    return PdfApi.saveDocument(name: 'my_invoice.pdf', pdf: pdf);
+    return PdfApi.saveDocument(name: 'Pallas_Place_Invoice.pdf', pdf: pdf);
   }
 
   static Widget buildHeader(Invoice invoice) => Column(
@@ -43,7 +43,7 @@ class PdfInvoiceApi {
                 width: 50,
                 child: BarcodeWidget(
                   barcode: Barcode.qrCode(),
-                  data: invoice.info.number,
+                  data: 'http://www.tamunorth.dev',
                 ),
               ),
             ],
@@ -99,7 +99,9 @@ class PdfInvoiceApi {
         children: [
           Text(supplier.name, style: TextStyle(fontWeight: FontWeight.bold)),
           SizedBox(height: 1 * PdfPageFormat.mm),
-          Text(supplier.address),
+          Text(
+            '33 George Innih Street, Apo legislative quarters,\nZone E, Abuja.',
+          ),
         ],
       );
 
@@ -122,18 +124,18 @@ class PdfInvoiceApi {
       'Date',
       'Quantity',
       'Unit Price',
-      'VAT',
+      // 'VAT',
       'Total'
     ];
     final data = invoice.items.map((item) {
-      final total = item.unitPrice * item.quantity * (1 + item.vat);
+      final total = item.unitPrice * item.quantity;
 
       return [
         item.description,
         Utils.formatDate(item.date),
         '${item.quantity}',
         '$naira ${item.unitPrice}',
-        '${item.vat} %',
+        // '${item.vat} %',
         '$naira ${total.toStringAsFixed(2)}',
       ];
     }).toList();
@@ -162,7 +164,9 @@ class PdfInvoiceApi {
         .reduce((item1, item2) => item1 + item2);
     final vatPercent = invoice.items.first.vat;
     final vat = netTotal * vatPercent;
-    final total = netTotal + vat;
+    // final total = netTotal + vat;
+
+    final total = netTotal;
 
     return Container(
       alignment: Alignment.centerRight,
@@ -186,7 +190,7 @@ class PdfInvoiceApi {
                 // ),
                 // Divider(),
                 buildText(
-                  title: 'Total amount due',
+                  title: 'Total amount due:',
                   titleStyle: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

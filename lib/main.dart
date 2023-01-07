@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:store_invoice_generator/page/pdf_page.dart';
+import 'package:store_invoice_generator/page/input_client_details_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +20,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: title,
         theme: ThemeData(primarySwatch: Colors.deepOrange),
-        home: PdfPage(),
+        home: InputClientDetailsPage(),
       );
 }
